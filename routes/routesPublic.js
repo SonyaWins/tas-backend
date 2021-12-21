@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const routes = express.Router();
 
 const user = require("../models/user");
-const { route } = require("express/lib/application");
 
 routes.post("/login", async (req, res) => {
   const usernameToFind = req.body.username;
@@ -30,10 +29,10 @@ routes.post("/login", async (req, res) => {
 
   const token = jwt.sign(
     {
-      name: user.name,
+      user: user.username,
       id: user._id,
     },
-    process.env.SECRETO_JWT
+    process.env.jwtSecret
   );
 
   res.json({

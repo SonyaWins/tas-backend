@@ -198,7 +198,7 @@ routes.post('/createInternalUser', async (req, res) => {
         passwordHash: password
     }
 
-    const usuario = new Usuario(newUser)
+    const usuario = new user(newUser)
     await usuario.save()
 
     res.json({
