@@ -1,80 +1,122 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken');
 
-const rutas = express.Router()
+const routes = express.Router()
 
-const Fruta = require("../models/Fruta")
-const Usuario = require("../models/Usuario")
+const port = require('../models/port')
+const order = require('../models/order')
+const distances = require('../models/distance')
 
-const get_frutas = async () => {
-    const datos = await Fruta.find()
-    return datos
+/**
+ * Object Manipulation functions
+ */
+
+const getActivePorts = async() =>{
+    const responseData = port.find({isActive: 1})
+    return responseData
 }
 
-rutas.get('/get_frutas', async (req, res) => {
-    res.json(await get_frutas())
+const getAllPorts = async() =>{
+    const responseData = port.find()
+    return responseData
+}
+
+const allOrders = async() =>{
+    const responseData = order.find()
+    return responseData
+}
+
+const ordersByUser = async(userID)=>{
+    const responseData = order.find({userID : userID})
+    return responseData
+}
+
+// Routes
+
+/**
+ * Ports
+ */
+routes.get('/getAllPorts', async (req, res) => {
+    res.json(await getAllPorts())
 })
 
-rutas.post('/crear_fruta', async (req, res) => {
-    const datos_fruta = req.body
+routes.get('/getActivePorts',async(req,res) =>{
+    res.json(await getActivePorts())
+})
 
-    const fruta = new Fruta(datos_fruta)
-    await fruta.save()
+routes.get('/getPort/:portID', async(req, res) =>{
+    const portID = req.params.portID
+    const requestedPort = await port.findById(portID)
+
+    res.json(requestedPort) 
+})
+
+routes.post('/createPort', async(req, res) =>{
+    const portData = req.body
+
+    const newPort = new port(portData)
+    
+    newPort.save()
 
     res.json({
-        mensaje: 'fruta creada correctamente'
+        message: 'Port Added Successfully.'
     })
 })
 
-rutas.get('/get_fruta_by_id/:id_fruta', async (req, res) => {
+routes.put('/updatePort/:portID', async(req,res) =>{
 
-    const id_fruta = req.params.id_fruta
+    const portID = req.params.portID
+    const updateQuery = req.body
 
-    const fruta = await Fruta.findById(id_fruta)
-
-    res.json(fruta)
-})
-
-rutas.delete('/eliminar_fruta/:id_fruta', async (req, res) => {
-
-    const id_fruta = req.params.id_fruta
-
-    const fruta = Fruta.findById(id_fruta)
-    await fruta.deleteOne()
+    await port.findByIdAndUpdate(portID, updateQuery, {upsert: true})
 
     res.json({
-        mensaje: 'fruta eliminada correctamente'
+        message: 'Port Updated Successfully.'
     })
 })
 
-rutas.get('/get_usuarios', async (req, res) => {
-    const usuarios = await Usuario.find()
-
-    res.json(usuarios)
+/**
+ * Orders
+ */
+routes.get('/getAllOrders', async(req, res) =>{
+    res.json(await allOrders())
 })
 
-rutas.post('/crear_usuario', async (req, res) => {
-    const datos_usuario = req.body
+routes.get('/getOrdersByUser/:userID', async(req,res) =>{
+    const userID = req.params.userID
+    res.json(await ordersByUser(userID))
+})
 
-    const salto = await bcrypt.genSalt(10)
+routes.get('/getOrder/:orderID', async(req,res)=>{
+    const orderID = req.params.orderID
+    const requestedOrder = order.findById(orderID)
+    res.json(requestedOrder)
+})
 
-    const password = await bcrypt.hash(datos_usuario.pass, salto)
+routes.post('/newOrder', async(req, res) =>{
+    const orderData = req.body
 
-    const nuevo_usuario = {
-        nombre: datos_usuario.nombre,
-        correo: datos_usuario.correo,
-        celular: datos_usuario.celular,
-        role: datos_usuario.role,
-        pass: password
-    }
-
-    const usuario = new Usuario(nuevo_usuario)
-    await usuario.save()
-
+    const order = new order(orderData)
+    
+    order.save()
     res.json({
-        mensaje: 'usuario creado correctamente'
+        message: 'Order created Successfully.'
     })
 })
 
-module.exports = rutas
+routes.put('updateOrder/:orderID', async(req, res) =>{
+    const orderID = req.params.orderID
+    const updateQuery = req.body
+
+    await order.findByIdAndUpdate(orderID, updateQuery, {upsert: true})
+
+    res.json({
+        message: 'Order Updated Successfully.'
+    })
+})
+
+/**
+ * Distances
+ */
+
+module.exports = routes;
