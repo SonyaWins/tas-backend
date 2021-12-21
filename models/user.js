@@ -9,6 +9,6 @@ const userSchema = new Schema({
     passwordHash: String
 })
 
-const user = mongoose.model('users', usuarioSchema)
+const user = mongoose.model('users', userSchema)
 
 module.exports = user

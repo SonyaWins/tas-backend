@@ -33,13 +33,13 @@ app.use(express.static(__dirname + "/public"));
  * Importar las rutas, las expuestas en el lado publico, luego las expuestas en el lado privado de la data
  */
 const generalRoutes = require("./routes/routesPrivate.js");
-//const discoveryRoutes = require("./routes/routesPublic.js")
+const discoveryRoutes = require("./routes/routesPublic.js")
 /**
  * Cargar los archivos de ruta en el servidor de Express
  */
-//app.use("/api", cors(cors_config), jsonParser, discoveryRoutes);
-//app.use('/api', cors(cors_config), jsonParser, verifyToken, generalRoutes);
-app.use("/api", cors(cors_config), jsonParser, generalRoutes);
+app.use("/api", cors(cors_config), jsonParser, discoveryRoutes);
+app.use('/api', cors(cors_config), jsonParser, verifyToken, generalRoutes);
+//app.use("/api", cors(cors_config), jsonParser, generalRoutes);
 
 /*
 app.use((req, res) => {
