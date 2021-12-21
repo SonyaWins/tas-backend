@@ -39,7 +39,8 @@ const generalRoutes = require("./routes/routesPrivate.js")
  * Cargar los archivos de ruta en el servidor de Express
  */
 app.use("/api", cors(cors_config), jsonParser, discoveryRoutes)
-app.use('/api', cors(cors_config), jsonParser, verifyToken, generalRoutes)
+app.use('/api', cors(cors_config), jsonParser, generalRoutes)
+//app.use('/api', cors(cors_config), jsonParser, verifyToken, generalRoutes)
 
 
 /*
