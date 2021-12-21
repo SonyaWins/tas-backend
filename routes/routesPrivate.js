@@ -162,15 +162,22 @@ routes.put('/updateRoute/:routeID', async(req,res) =>{
 
 routes.get('/getAvailableRoutes/:fromLocationID', async(req,res) =>{
     const locationID = req.params.fromLocationID
-    const availableTripLocations = port.aggregate(
+    const availableTripLocations = await distance.aggregate(
         [
-            {$match: { _id: ObjectID(locationID)}},
-            {$lookup: {
-                from: 'distances',
-                localField: '_id',
-                foreignField: '_originPortID',
-                as: 'locations'
-            }}
+            {   
+                $match: { 
+                    originPortID: locationID
+                }
+            },
+            {
+                $lookup: {
+                    from: 'ports',
+                    localField: 'destinationPortID',
+                    foreignField: '_id',
+                    as: 'locations'
+                }
+            } 
+            
         ]
     )
     res.json(availableTripLocations)
