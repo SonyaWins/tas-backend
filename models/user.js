@@ -1,4 +1,4 @@
-const mongoose = require('../db/Basedatos')
+const mongoose = require('../database/dbHelper')
 
 const Schema = mongoose.Schema
 

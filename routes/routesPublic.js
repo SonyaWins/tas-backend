@@ -14,7 +14,7 @@ rutas.post("/login", async (req, res) => {
 
   if (!usuario) {
     return res.json({
-      mensaje: "usuario no existe",
+      mensaje: "User does not exist",
     });
   } else {
     const password = req.body.pass;
@@ -23,7 +23,7 @@ rutas.post("/login", async (req, res) => {
 
     if (!validacion_pass) {
       return res.json({
-        mensaje: "clave no valida",
+        mensaje: "Password incorrect",
       });
     }
   }
@@ -37,7 +37,7 @@ rutas.post("/login", async (req, res) => {
   );
 
   res.json({
-    mensaje: "Bienvenido",
+    message: "Welcome",
     token: token,
   });
 });

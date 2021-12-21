@@ -1,4 +1,4 @@
-const dbHelper = require('../database/dbHelper.js')
+const dbHelper = require('../database/dbHelper')
 
 const Schema = dbHelper.Schema
 

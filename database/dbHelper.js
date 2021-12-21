@@ -4,7 +4,7 @@ const dbUser = process.env.dbUser;
 const dbPassword = process.env.dbPassword;
 const collectionName = process.env.collectionName;
 
-const dbURI = `mongodb+srv://${dbUser}:${dbPassword}@servidor.dwcvs.mongodb.net/${collectionName}?retryWrites=true&w=majority`;
+const dbURI = `mongodb+srv://${dbUser}:${dbPassword}@taslogisticscluster.ffznp.mongodb.net/${collectionName}?retryWrites=true&w=majority`;
 
 dbHelper
   .connect(dbURI)

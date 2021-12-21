@@ -1,10 +1,10 @@
-const dbHelper = require('../database/dbHelper.js')
+const dbHelper = require('../database/dbHelper')
 
 const Schema = dbHelper.Schema
 
 const portSchema = new Schema({
     locationName: String,
-    isActive: Boolean
+    isActive: Number
 })
 
 const port = dbHelper.model('ports', portSchema)
